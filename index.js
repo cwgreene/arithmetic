@@ -10,11 +10,21 @@ function renderProblem(divisor, dividend) {
     }
     decumulator = dividend;
     for(var j = 0; j <= Math.log10(dividend); j++) {
-        row.splice(i, 0, {"text": decumulator % 10, "topBorder":true});
+        row.splice(i, 0, {"text": decumulator % 10, "borderTop":true});
         decumulator = Math.floor(decumulator/10); 
     }
-    row[i].leftBorder = true;
+    row[i].borderLeft = true;
     return renderGrid([row.map(()=> null), row]);
+}
+
+function borderize(obj, element) {
+    for (dir of ["Top", "Right", "Bottom", "Left"]) {
+        if (obj[`border${dir}`]) {
+            element.style[`border${dir}`] = "solid";
+            element.style[`border${dir}Width`] = "1px";
+            element.style[`border${dir}Color`] = "black";
+        }
+    }
 }
 
 function renderGrid(grid) {
@@ -39,16 +49,7 @@ function renderGrid(grid) {
             if (obj !== null) {
                 if (obj.text !== undefined) {
                     element.textContent = grid[i][j].text;
-                    if (obj.leftBorder) {
-                        element.style.borderLeft = "solid";
-                        element.style.borderLeftWidth = "1px";
-                        element.style.borderLeftColor = "black";
-                    }
-                    if (obj.topBorder) {
-                        element.style.borderTop = "solid";
-                        element.style.borderTopWidth = "1px";
-                        element.style.borderTopColor = "black";
-                    }
+                    borderize(obj, element);
                 } else {
                     element.textContent = grid[i][j];
                 }
